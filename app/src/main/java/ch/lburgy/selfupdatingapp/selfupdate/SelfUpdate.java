@@ -50,8 +50,7 @@ public class SelfUpdate {
                 }
                 if (release != null) {
                     try {
-                        int lastVersionCode = Integer.parseInt(release.getTag_name());
-                        if (lastVersionCode > BuildConfig.VERSION_CODE)
+                        if (Integer.parseInt(release.getTag_name()) > BuildConfig.VERSION_CODE)
                             showUpdateAvailable(release);
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
@@ -71,23 +70,28 @@ public class SelfUpdate {
         }
         if (downloadUrl == null) return;
 
-        View content = activity.getLayoutInflater().inflate(R.layout.content_dialog_show_update, null);
-        TextView version = content.findViewById(R.id.version);
-        version.setText(String.format("%s :", release.getName()));
-        TextView changelog = content.findViewById(R.id.changelog);
-        changelog.setText(release.getBody());
-
         final String finalDownloadUrl = downloadUrl;
-        new AlertDialog.Builder(activity)
-                .setTitle(activity.getResources().getString(R.string.dialog_update_title))
-                .setView(content)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        updateApp(finalDownloadUrl);
-                    }
-                })
-                .setNegativeButton(android.R.string.no, null)
-                .show();
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                View content = activity.getLayoutInflater().inflate(R.layout.content_dialog_show_update, null);
+                TextView version = content.findViewById(R.id.version);
+                version.setText(String.format("%s :", release.getName()));
+                TextView changelog = content.findViewById(R.id.changelog);
+                changelog.setText(release.getBody());
+
+                new AlertDialog.Builder(activity)
+                        .setTitle(activity.getResources().getString(R.string.dialog_update_title))
+                        .setView(content)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                updateApp(finalDownloadUrl);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
+            }
+        });
     }
 
     private static void updateApp(String downloadUrl) {
