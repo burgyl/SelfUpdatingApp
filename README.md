@@ -53,8 +53,16 @@ And add this provider in the application tag :
 Add the entirety of the package `selfupdate`.
 
 In the onCreate of your activity, add this to check if there is an update at the start of the application :
+
 ```java
 if (savedInstanceState == null)
+    SelfUpdate.checkUpdate(this, "https://api.github.com/repos/burgyl/SelfUpdatingApp/releases/latest");
+```
+
+or this if you support API before 21 :
+
+```java
+if (savedInstanceState == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
     SelfUpdate.checkUpdate(this, "https://api.github.com/repos/burgyl/SelfUpdatingApp/releases/latest");
 ```
 

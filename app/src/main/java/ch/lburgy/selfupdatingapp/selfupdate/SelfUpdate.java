@@ -121,10 +121,11 @@ public class SelfUpdate {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setProgress(progress);
+                        if (!activity.isDestroyed())
+                            progressBar.setProgress(progress);
                     }
                 });
-                if (done) alertDialog.dismiss();
+                if (done && !activity.isDestroyed()) alertDialog.dismiss();
             }
         };
 
