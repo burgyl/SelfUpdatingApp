@@ -30,18 +30,13 @@ public class SelfUpdate {
     private static final String FILENAME_APK = "update.apk";
     private static final String CONTENT_TYPE_APK = "application/vnd.android.package-archive";
 
-    private AppCompatActivity activity;
-    private int requestCode;
-    private SelfUpdateHttpClient httpClient;
-    private File apkFile;
+    private static AppCompatActivity activity;
+    private static SelfUpdateHttpClient httpClient;
 
-    public SelfUpdate(AppCompatActivity activity, int requestCode) {
-        this.activity = activity;
-        this.requestCode = requestCode;
+    public static void checkUpdate(AppCompatActivity activity) {
+        SelfUpdate.activity = activity;
         httpClient = new SelfUpdateHttpClient(activity);
-    }
 
-    public void checkUpdate() {
         if (!httpClient.isConnectedToInternet()) return;
         new Thread(new Runnable() {
             @Override
@@ -53,15 +48,14 @@ public class SelfUpdate {
                     e.printStackTrace();
                 }
                 final Release finalRelease = release;
-                activity.runOnUiThread(new Runnable() {
+                SelfUpdate.activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (finalRelease != null) {
                             try {
                                 int lastVersionCode = Integer.parseInt(finalRelease.getTag_name());
-                                if (lastVersionCode > BuildConfig.VERSION_CODE) {
+                                if (lastVersionCode > BuildConfig.VERSION_CODE)
                                     showUpdateAvailable(finalRelease);
-                                }
                             } catch (NumberFormatException e) {
                                 e.printStackTrace();
                             }
@@ -72,7 +66,7 @@ public class SelfUpdate {
         }).start();
     }
 
-    private void showUpdateAvailable(final Release release) {
+    private static void showUpdateAvailable(final Release release) {
         View content = activity.getLayoutInflater().inflate(R.layout.content_dialog_show_update, null);
         TextView version = content.findViewById(R.id.version);
         version.setText(String.format("%s :", release.getName()));
@@ -90,7 +84,7 @@ public class SelfUpdate {
                 .show();
     }
 
-    private void updateApp(Release release) {
+    private static void updateApp(Release release) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             for (Asset asset : release.getAssets()) {
                 if (asset.getContent_type().equals(CONTENT_TYPE_APK)) {
@@ -105,7 +99,7 @@ public class SelfUpdate {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void downloadUpdate(final String url) {
+    private static void downloadUpdate(final String url) {
         View content = activity.getLayoutInflater().inflate(R.layout.content_dialog_download, null);
 
         final AlertDialog alertDialog = new AlertDialog.Builder(activity)
@@ -144,8 +138,8 @@ public class SelfUpdate {
                 };
 
                 try {
-                    apkFile = httpClient.download(url, FILENAME_APK, interceptor);
-                    if (apkFile != null) installAPK();
+                    File apkFile = httpClient.download(url, FILENAME_APK, interceptor);
+                    if (apkFile != null) installAPK(apkFile);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -154,15 +148,11 @@ public class SelfUpdate {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private void installAPK() {
+    private static void installAPK(File apkFile) {
         Uri uri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".provider", apkFile);
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setDataAndType(uri, CONTENT_TYPE_APK);
         i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        activity.startActivityForResult(i, requestCode);
-    }
-
-    public void deleteFile() {
-        apkFile.delete();
+        activity.startActivity(i);
     }
 }

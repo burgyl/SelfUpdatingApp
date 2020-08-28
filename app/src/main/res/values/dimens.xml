@@ -1,5 +1,5 @@
 <resources>
-    <!-- screen  -->
+    <!-- selfupdate  -->
     <dimen name="dialog_content_horizontal_margin">24dp</dimen>
     <dimen name="dialog_content_vertical_margin">8dp</dimen>
 </resources>

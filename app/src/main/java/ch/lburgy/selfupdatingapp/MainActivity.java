@@ -11,10 +11,6 @@ import ch.lburgy.selfupdatingapp.selfupdate.SelfUpdate;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int REQUEST_CODE_INSTALL = 0;
-
-    private SelfUpdate selfUpdate;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,16 +22,7 @@ public class MainActivity extends AppCompatActivity {
         TextView versionName = findViewById(R.id.versionName);
         versionName.setText(BuildConfig.VERSION_NAME);
 
-        if (savedInstanceState == null) {
-            selfUpdate = new SelfUpdate(this, REQUEST_CODE_INSTALL);
-            selfUpdate.checkUpdate();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CODE_INSTALL)
-            selfUpdate.deleteFile();
-        super.onActivityResult(requestCode, resultCode, data);
+        // Check if an update is available at startup
+        if (savedInstanceState == null) SelfUpdate.checkUpdate(this);
     }
 }
