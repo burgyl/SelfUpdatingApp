@@ -77,3 +77,9 @@ And add the file provider paths :
 ```
 xml/file_provider_paths.xml
 ```
+
+## Licenses & Credits
+
+- [Moshi](https://github.com/square/moshi) by [Square Open Source](https://square.github.io/), licensed under The Apache 2.0 license
+- [OkHttp](https://github.com/square/okhttp) by [Square Open Source](https://square.github.io/), licensed under The Apache 2.0 license
+- [Okio](https://github.com/square/okio) by [Square Open Source](https://square.github.io/), licensed under The Apache 2.0 license
