@@ -4,6 +4,7 @@ An Android Application that can update itself if new releases in GitHub are avai
 Based on [*Implement an in-app update function*](https://medium.com/grandcentrix/implement-an-in-app-updater-1f50fbc38416) by Tom Seifert.
 
 ## Requirements
+Works on Android API 21 (5.0, Lollipop) and above (because of OkHttp).
 Your releases' tags must be the code version of the app and an APK must be in the binaries.
 
 ## What it does
@@ -11,7 +12,7 @@ It shows a dialog with the changelog and the name of the last release if there i
 
 If the user clicks OK :
 - Android 7 and above: Downloads and installs the APK
-- Below Android 7 : Opens the release page on a web browser
+- Below Android 7 : Downloads the APK, the user has to go to the notifications to install it
 
 ## Installation
 
@@ -19,7 +20,6 @@ If the user clicks OK :
 
 Add this in your gradle dependencies :
 ```
-implementation group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
 implementation 'com.squareup.okhttp3:okhttp:4.6.0'
 implementation 'com.squareup.moshi:moshi:1.9.3'
 implementation 'com.squareup.okio:okio:2.8.0'
