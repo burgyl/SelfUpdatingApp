@@ -34,7 +34,7 @@ public class SelfUpdate {
     private static AppCompatActivity activity;
     private static SelfUpdateHttpClient httpClient;
 
-    public static void checkUpdate(AppCompatActivity activity) {
+    public static void checkUpdate(AppCompatActivity activity, final String url) {
         SelfUpdate.activity = activity;
         httpClient = new SelfUpdateHttpClient(activity);
 
@@ -44,7 +44,7 @@ public class SelfUpdate {
             public void run() {
                 Release release = null;
                 try {
-                    release = httpClient.getLastRelease();
+                    release = httpClient.getLastRelease(url);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

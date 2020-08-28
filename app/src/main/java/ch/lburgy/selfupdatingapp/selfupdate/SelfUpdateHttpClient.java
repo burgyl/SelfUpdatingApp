@@ -27,8 +27,6 @@ import okio.Okio;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class SelfUpdateHttpClient {
 
-    private static final String URL_APP_REPO = "https://api.github.com/repos/burgyL/SelfUpdatingApp/releases/latest";
-
     private OkHttpClient simpleOkHttpClient;
     private final Context context;
 
@@ -37,8 +35,8 @@ public class SelfUpdateHttpClient {
         simpleOkHttpClient = new OkHttpClient();
     }
 
-    public Release getLastRelease() throws HttpException, IOException, NoInternetConnectionException {
-        String body = get(URL_APP_REPO);
+    public Release getLastRelease(String url) throws HttpException, IOException, NoInternetConnectionException {
+        String body = get(url);
         Moshi moshi = new Moshi.Builder().build();
         JsonAdapter<Release> jsonAdapter = moshi.adapter(Release.class);
         return jsonAdapter.fromJson(body);

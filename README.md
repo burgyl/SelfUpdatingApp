@@ -54,10 +54,11 @@ Add the entirety of the package `selfupdate`.
 
 In the onCreate of your activity, add this to check if there is an update at the start of the application :
 ```java
-if (savedInstanceState == null) SelfUpdate.checkUpdate(this);
+if (savedInstanceState == null)
+    SelfUpdate.checkUpdate(this, "https://api.github.com/repos/burgyl/SelfUpdatingApp/releases/latest");
 ```
 
-In the class `SelfUpdateHttpClient` adapt the URL on [this line](https://github.com/burgyl/SelfUpdatingApp/blob/53539ead515fd4475d9413be8d68f79773bcdb97/app/src/main/java/ch/lburgy/selfupdatingapp/selfupdate/SelfUpdateHttpClient.java#L30) to correspond to your repo and his owner.
+You have to adapt the above URL to match your repository.
 
 ### Resources
 
