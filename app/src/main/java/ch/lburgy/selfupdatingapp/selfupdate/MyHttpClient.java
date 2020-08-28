@@ -1,4 +1,4 @@
-package ch.lburgy.selfupdatingapp;
+package ch.lburgy.selfupdatingapp.selfupdate;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.UnknownHostException;
 
-import ch.lburgy.selfupdatingapp.github.Release;
+import ch.lburgy.selfupdatingapp.selfupdate.github.Release;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

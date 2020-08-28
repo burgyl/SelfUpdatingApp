@@ -1,4 +1,4 @@
-package ch.lburgy.selfupdatingapp.github;
+package ch.lburgy.selfupdatingapp.selfupdate.github;
 
 public class Asset {
     private String url;

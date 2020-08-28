@@ -1,4 +1,4 @@
-package ch.lburgy.selfupdatingapp;
+package ch.lburgy.selfupdatingapp.selfupdate;
 
 import java.io.IOException;
 

@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/dialog_content_horizontal_margin"
-        android:layout_marginVertical="@dimen/dialog_content_vertical_margin">
+        android:layout_marginTop="@dimen/dialog_content_vertical_margin">
 
         <TextView
             android:id="@+id/changelog"
