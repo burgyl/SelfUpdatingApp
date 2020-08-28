@@ -64,15 +64,15 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (finalRelease != null) {/*
+                        if (finalRelease != null) {
                             try {
                                 int lastVersionCode = Integer.parseInt(finalRelease.getTag_name());
-                                if (lastVersionCode > BuildConfig.VERSION_CODE) {*/
-                            showUpdateAvailable(finalRelease);
-                               /* }
+                                if (lastVersionCode > BuildConfig.VERSION_CODE) {
+                                    showUpdateAvailable(finalRelease);
+                                }
                             } catch (NumberFormatException e) {
                                 e.printStackTrace();
-                            }*/
+                            }
                         }
                     }
                 });
