@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Self Updating App</string>
+    <string name="dialog_update_title">Do you want to update the app ?</string>
+    <string name="dialog_downloading_title">Downloading the update</string>
 </resources>

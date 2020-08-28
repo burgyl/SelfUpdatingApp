@@ -79,7 +79,7 @@ public class SelfUpdate {
         TextView changelog = content.findViewById(R.id.changelog);
         changelog.setText(release.getBody());
         new AlertDialog.Builder(activity)
-                .setTitle("Do you want to update the app ?")
+                .setTitle(activity.getResources().getString(R.string.dialog_update_title))
                 .setView(content)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -91,7 +91,7 @@ public class SelfUpdate {
     }
 
     private void updateApp(Release release) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             for (Asset asset : release.getAssets()) {
                 if (asset.getContent_type().equals(CONTENT_TYPE_APK)) {
                     downloadUpdate(asset.getBrowser_download_url());
@@ -104,12 +104,12 @@ public class SelfUpdate {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void downloadUpdate(final String url) {
         View content = activity.getLayoutInflater().inflate(R.layout.content_dialog_download, null);
 
         final AlertDialog alertDialog = new AlertDialog.Builder(activity)
-                .setTitle("Downloading the update")
+                .setTitle(activity.getResources().getString(R.string.dialog_downloading_title))
                 .setView(content)
                 .setCancelable(false)
                 .show();
@@ -125,7 +125,7 @@ public class SelfUpdate {
                         progressBar.setProgress(progress);
                     }
                 });
-                if (done) alertDialog.cancel();
+                if (done) alertDialog.dismiss();
             }
         };
 
@@ -153,6 +153,7 @@ public class SelfUpdate {
         }).start();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void installAPK() {
         Uri uri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".provider", apkFile);
         Intent i = new Intent(Intent.ACTION_VIEW);
