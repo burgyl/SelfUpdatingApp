@@ -30,18 +30,19 @@ public class SelfUpdate {
     private static final String FILENAME_APK = "update.apk";
     private static final String CONTENT_TYPE_APK = "application/vnd.android.package-archive";
 
-    private int requestCode;
-    private MyHttpClient httpClient;
-    private File apkFile;
     private AppCompatActivity activity;
+    private int requestCode;
+    private SelfUpdateHttpClient httpClient;
+    private File apkFile;
 
     public SelfUpdate(AppCompatActivity activity, int requestCode) {
         this.activity = activity;
         this.requestCode = requestCode;
-        httpClient = new MyHttpClient(activity);
+        httpClient = new SelfUpdateHttpClient(activity);
     }
 
     public void checkUpdate() {
+        if (!httpClient.isConnectedToInternet()) return;
         new Thread(new Runnable() {
             @Override
             public void run() {

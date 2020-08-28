@@ -32,7 +32,7 @@ import okhttp3.ResponseBody;
 import okio.BufferedSink;
 import okio.Okio;
 
-public class MyHttpClient {
+public class SelfUpdateHttpClient {
 
     private static final String URL_APP_REPO = "https://api.github.com/repos/burgyL/SelfUpdatingApp/releases/latest";
 
@@ -40,7 +40,7 @@ public class MyHttpClient {
     private HttpClient simpleHttpClient;
     private final Context context;
 
-    public MyHttpClient(Context context) {
+    public SelfUpdateHttpClient(Context context) {
         this.context = context;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
