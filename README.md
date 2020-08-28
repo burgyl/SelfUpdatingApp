@@ -14,6 +14,8 @@ If the user clicks OK :
 - Android 7 and above: Downloads and installs the APK
 - Below Android 7 : Downloads the APK, the user has to go to the notifications to install it
 
+The dialog isn't shown if the release doesn't have an APK.
+
 ## Installation
 
 ### Gradle dependencies
@@ -54,6 +56,8 @@ In the onCreate of your activity, add this to check if there is an update at the
 ```java
 if (savedInstanceState == null) SelfUpdate.checkUpdate(this);
 ```
+
+In the class `SelfUpdateHttpClient` adapt the URL on [this line](https://github.com/burgyl/SelfUpdatingApp/blob/53539ead515fd4475d9413be8d68f79773bcdb97/app/src/main/java/ch/lburgy/selfupdatingapp/selfupdate/SelfUpdateHttpClient.java#L30) to correspond to your repo and his owner.
 
 ### Resources
 
