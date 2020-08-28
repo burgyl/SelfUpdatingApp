@@ -8,7 +8,7 @@ Works on Android API 21 (5.0, Lollipop) and above (because of OkHttp).
 Your releases' tags must be the code version of the app and an APK must be in the binaries.
 
 ## What it does
-It shows a dialog with the changelog and the name of the last release if there is a new release available.
+It shows a dialog with the changelog and the name of the last release if a new release is available.
 
 If the user clicks OK :
 - Android 7 and above: Downloads and installs the APK
@@ -80,6 +80,6 @@ xml/file_provider_paths.xml
 
 ## Licenses & Credits
 
-- [Moshi](https://github.com/square/moshi) by [Square Open Source](https://square.github.io/), licensed under The Apache 2.0 license
-- [OkHttp](https://github.com/square/okhttp) by [Square Open Source](https://square.github.io/), licensed under The Apache 2.0 license
-- [Okio](https://github.com/square/okio) by [Square Open Source](https://square.github.io/), licensed under The Apache 2.0 license
+- [Moshi](https://github.com/square/moshi) by [Square Open Source](https://square.github.io/), licensed under the Apache 2.0 license
+- [OkHttp](https://github.com/square/okhttp) by [Square Open Source](https://square.github.io/), licensed under the Apache 2.0 license
+- [Okio](https://github.com/square/okio) by [Square Open Source](https://square.github.io/), licensed under the Apache 2.0 license
