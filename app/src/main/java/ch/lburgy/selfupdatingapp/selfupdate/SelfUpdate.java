@@ -25,6 +25,7 @@ import ch.lburgy.selfupdatingapp.selfupdate.github.Release;
 import okhttp3.Interceptor;
 import okhttp3.Response;
 
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class SelfUpdate {
 
     private static final String FILENAME_APK = "update.apk";
@@ -47,53 +48,53 @@ public class SelfUpdate {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                final Release finalRelease = release;
-                SelfUpdate.activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (finalRelease != null) {
-                            try {
-                                int lastVersionCode = Integer.parseInt(finalRelease.getTag_name());
-                                if (lastVersionCode > BuildConfig.VERSION_CODE)
-                                    showUpdateAvailable(finalRelease);
-                            } catch (NumberFormatException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                if (release != null) {
+                    try {
+                        int lastVersionCode = Integer.parseInt(release.getTag_name());
+                        if (lastVersionCode > BuildConfig.VERSION_CODE)
+                            showUpdateAvailable(release);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
                     }
-                });
+                }
             }
         }).start();
     }
 
     private static void showUpdateAvailable(final Release release) {
+        String downloadUrl = null;
+        for (Asset asset : release.getAssets()) {
+            if (asset.getContent_type().equals(CONTENT_TYPE_APK)) {
+                downloadUrl = asset.getBrowser_download_url();
+                break;
+            }
+        }
+        if (downloadUrl == null) return;
+
         View content = activity.getLayoutInflater().inflate(R.layout.content_dialog_show_update, null);
         TextView version = content.findViewById(R.id.version);
         version.setText(String.format("%s :", release.getName()));
         TextView changelog = content.findViewById(R.id.changelog);
         changelog.setText(release.getBody());
+
+        final String finalDownloadUrl = downloadUrl;
         new AlertDialog.Builder(activity)
                 .setTitle(activity.getResources().getString(R.string.dialog_update_title))
                 .setView(content)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        updateApp(release);
+                        updateApp(finalDownloadUrl);
                     }
                 })
                 .setNegativeButton(android.R.string.no, null)
                 .show();
     }
 
-    private static void updateApp(Release release) {
+    private static void updateApp(String downloadUrl) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            for (Asset asset : release.getAssets()) {
-                if (asset.getContent_type().equals(CONTENT_TYPE_APK)) {
-                    downloadUpdate(asset.getBrowser_download_url());
-                    break;
-                }
-            }
+            downloadUpdate(downloadUrl);
         } else {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(release.getHtml_url()));
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl));
             activity.startActivity(browserIntent);
         }
     }

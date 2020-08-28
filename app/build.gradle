@@ -4,14 +4,12 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
-    useLibrary 'org.apache.http.legacy'
-
     defaultConfig {
         applicationId "ch.lburgy.selfupdatingapp"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 29
-        versionCode 7
-        versionName "1.0.6"
+        versionCode 8
+        versionName "1.0.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -26,7 +24,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation group: 'org.apache.httpcomponents', name: 'httpclient-android', version: '4.3.5.1'
     implementation 'com.squareup.okhttp3:okhttp:4.6.0'
     implementation 'com.squareup.moshi:moshi:1.9.3'
     implementation 'com.squareup.okio:okio:2.8.0'

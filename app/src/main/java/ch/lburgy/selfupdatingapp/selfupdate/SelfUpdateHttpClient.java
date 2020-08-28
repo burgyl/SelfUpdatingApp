@@ -10,14 +10,6 @@ import androidx.annotation.RequiresApi;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InterruptedIOException;
@@ -32,22 +24,17 @@ import okhttp3.ResponseBody;
 import okio.BufferedSink;
 import okio.Okio;
 
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class SelfUpdateHttpClient {
 
     private static final String URL_APP_REPO = "https://api.github.com/repos/burgyL/SelfUpdatingApp/releases/latest";
 
     private OkHttpClient simpleOkHttpClient;
-    private HttpClient simpleHttpClient;
     private final Context context;
 
     public SelfUpdateHttpClient(Context context) {
         this.context = context;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            simpleOkHttpClient = new OkHttpClient();
-        } else {
-            simpleHttpClient = HttpClientBuilder.create().build();
-        }
+        simpleOkHttpClient = new OkHttpClient();
     }
 
     public Release getLastRelease() throws HttpException, IOException, NoInternetConnectionException {
@@ -57,7 +44,6 @@ public class SelfUpdateHttpClient {
         return jsonAdapter.fromJson(body);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public File download(String url, String filename, Interceptor networkInterceptor) throws HttpException, UnknownHostException, NoInternetConnectionException, InterruptedIOException {
         if (!isConnectedToInternet()) throw new NoInternetConnectionException();
 
@@ -100,56 +86,31 @@ public class SelfUpdateHttpClient {
 
     private String get(String url) throws HttpException, UnknownHostException, NoInternetConnectionException, InterruptedIOException {
         if (!isConnectedToInternet()) throw new NoInternetConnectionException();
-        String result = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Request request = new Request.Builder().url(url).build();
 
-            Response response = null;
-            try {
-                response = simpleOkHttpClient.newCall(request).execute();
-            } catch (IOException e) {
-                if (e.getClass() == UnknownHostException.class)
-                    throw (UnknownHostException) e;
-                else if (e.getClass() == InterruptedIOException.class)
-                    throw (InterruptedIOException) e;
-                e.printStackTrace();
-            }
+        Request request = new Request.Builder().url(url).build();
 
-            if (!response.isSuccessful()) throw new HttpException(response.code());
-
-            ResponseBody responseBody = response.body();
-            if (responseBody == null) return null;
-
-            try {
-                result = responseBody.string();
-            } catch (IOException e) {
-                return null;
-            }
-        } else {
-            HttpUriRequest request = new HttpGet(url);
-
-            HttpResponse response = null;
-            try {
-                response = simpleHttpClient.execute(request);
-            } catch (IOException e) {
-                if (e.getClass() == UnknownHostException.class)
-                    throw (UnknownHostException) e;
-                e.printStackTrace();
-            }
-
-            int httpCode = response.getStatusLine().getStatusCode();
-            if (httpCode != 200) throw new HttpException(httpCode);
-
-            HttpEntity entity = response.getEntity();
-            if (entity != null) {
-                try {
-                    result = EntityUtils.toString(entity);
-                } catch (IOException e) {
-                    return null;
-                }
-            }
+        Response response = null;
+        try {
+            response = simpleOkHttpClient.newCall(request).execute();
+        } catch (IOException e) {
+            if (e.getClass() == UnknownHostException.class)
+                throw (UnknownHostException) e;
+            else if (e.getClass() == InterruptedIOException.class)
+                throw (InterruptedIOException) e;
+            e.printStackTrace();
         }
-        return result;
+
+        if (!response.isSuccessful()) throw new HttpException(response.code());
+
+        ResponseBody responseBody = response.body();
+        if (responseBody == null) return null;
+
+        try {
+            return responseBody.string();
+        } catch (IOException e) {
+            // nothing
+        }
+        return null;
     }
 
     public boolean isConnectedToInternet() {
