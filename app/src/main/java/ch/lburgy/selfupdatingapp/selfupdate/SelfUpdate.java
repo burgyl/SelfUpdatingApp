@@ -30,11 +30,13 @@ public class SelfUpdate {
 
     private static final String FILENAME_APK = "update.apk";
     private static final String CONTENT_TYPE_APK = "application/vnd.android.package-archive";
+    private static final String BASE_URL = "https://api.github.com/repos/%s/%s/releases/latest";
 
     private static AppCompatActivity activity;
     private static SelfUpdateHttpClient httpClient;
 
-    public static void checkUpdate(AppCompatActivity activity, final String url) {
+    public static void checkUpdate(AppCompatActivity activity, String username, String repository) {
+        final String url = String.format(BASE_URL, username, repository);
         SelfUpdate.activity = activity;
         httpClient = new SelfUpdateHttpClient(activity);
 

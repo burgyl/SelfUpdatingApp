@@ -22,6 +22,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Check if an update is available at startup
         if (savedInstanceState == null)
-            SelfUpdate.checkUpdate(this, "https://api.github.com/repos/burgyl/SelfUpdatingApp/releases/latest");
+            SelfUpdate.checkUpdate(this, "burgyl", "SelfUpdatingApp");
     }
 }

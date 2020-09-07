@@ -56,17 +56,17 @@ In the onCreate of your activity, add this to check if there is an update at the
 
 ```java
 if (savedInstanceState == null)
-    SelfUpdate.checkUpdate(this, "https://api.github.com/repos/burgyl/SelfUpdatingApp/releases/latest");
+    SelfUpdate.checkUpdate(this, "burgyl", "SelfUpdatingApp");
 ```
 
 or this if you support API before 21 :
 
 ```java
 if (savedInstanceState == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-    SelfUpdate.checkUpdate(this, "https://api.github.com/repos/burgyl/SelfUpdatingApp/releases/latest");
+    SelfUpdate.checkUpdate(this, "burgyl", "SelfUpdatingApp");
 ```
 
-You have to adapt the above URL to match your repository.
+You have to adapt the above username and repository.
 
 ### Resources
 
