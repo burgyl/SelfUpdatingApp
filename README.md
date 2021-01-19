@@ -1,10 +1,10 @@
 # Self Updating App
 An Android Application that can update itself if new releases in GitHub are available.
 
-Based on [*Implement an in-app update function*](https://medium.com/grandcentrix/implement-an-in-app-updater-1f50fbc38416) by Tom Seifert.
+Based on [*Implement an in-app update function*](https://medium.com/grandcentrix/implement-an-in-app-updater-1f50fbc38416) by [Tom Seifert](https://medium.com/@Syex).
 
 ## Requirements
-Works on Android API 21 (5.0, Lollipop) and above (because of OkHttp).
+Works on Android API 21 (5.0, Lollipop) and above (because of [OkHttp](https://github.com/square/okhttp)).
 Your releases' tags must be the code version of the app and an APK must be in the binaries.
 
 ## What it does
